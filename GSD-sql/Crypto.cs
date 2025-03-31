@@ -1,55 +1,71 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Login_Hash
-
 {
-    public class Crypto
+    public static class LoginHash
     {
-        public static string md5encrypt(string frase)
+        // Método para gerar o hash de um texto usando MD5
+        public static string MD5Encrypt(string frase)
         {
-            UTF8Encoding encoder = new UTF8Encoding();
-            MD5CryptoServiceProvider md5hasher = new MD5CryptoServiceProvider();
-            byte[] hashedDataBytes = md5hasher.ComputeHash(encoder.GetBytes(frase));
-            return byteArrayToString(hashedDataBytes);
-        }
-        public static string sha1encrypt(string frase)
-        {
-            UTF8Encoding encoder = new UTF8Encoding();
-            SHA1CryptoServiceProvider sha1hasher = new SHA1CryptoServiceProvider();
-            byte[] hashedDataBytes = sha1hasher.ComputeHash(encoder.GetBytes(frase));
-            return byteArrayToString(hashedDataBytes);
-        }
-        public static string sha256encrypt(string frase)
-        {
-            UTF8Encoding encoder = new UTF8Encoding();
-            SHA256Managed sha256hasher = new SHA256Managed();
-            byte[] hashedDataBytes = sha256hasher.ComputeHash(encoder.GetBytes(frase));
-            return byteArrayToString(hashedDataBytes);
-        }
-        public static string sha384encrypt(string frase)
-        {
-            UTF8Encoding encoder = new UTF8Encoding();
-            SHA384Managed sha384hasher = new SHA384Managed();
-            byte[] hashedDataBytes = sha384hasher.ComputeHash(encoder.GetBytes(frase));
-            return byteArrayToString(hashedDataBytes);
-        }
-        public static string sha512encrypt(string frase)
-        {
-            UTF8Encoding encoder = new UTF8Encoding();
-            SHA512Managed sha512hasher = new SHA512Managed();
-            byte[] hashedDataBytes = sha512hasher.ComputeHash(encoder.GetBytes(frase));
-            return byteArrayToString(hashedDataBytes);
-        }
-        public static string byteArrayToString(byte[] inputArray)
-        {
-            StringBuilder output = new StringBuilder("");
-            for (int i = 0; i < inputArray.Length; i++)
+            using (MD5 md5hasher = MD5.Create())
             {
-                output.Append(inputArray[i].ToString("X2"));
+                byte[] hashedDataBytes = md5hasher.ComputeHash(Encoding.UTF8.GetBytes(frase));
+                return ByteArrayToString(hashedDataBytes);
+            }
+        }
+
+        // Método para gerar o hash de um texto usando SHA1
+        public static string SHA1Encrypt(string frase)
+        {
+            using (SHA1 sha1hasher = SHA1.Create())
+            {
+                byte[] hashedDataBytes = sha1hasher.ComputeHash(Encoding.UTF8.GetBytes(frase));
+                return ByteArrayToString(hashedDataBytes);
+            }
+        }
+
+        // Método para gerar o hash de um texto usando SHA256
+        public static string SHA256Encrypt(string frase)
+        {
+            using (SHA256 sha256hasher = SHA256.Create())
+            {
+                byte[] hashedDataBytes = sha256hasher.ComputeHash(Encoding.UTF8.GetBytes(frase));
+                return ByteArrayToString(hashedDataBytes);
+            }
+        }
+
+        // Método para gerar o hash de um texto usando SHA384
+        public static string SHA384Encrypt(string frase)
+        {
+            using (SHA384 sha384hasher = SHA384.Create())
+            {
+                byte[] hashedDataBytes = sha384hasher.ComputeHash(Encoding.UTF8.GetBytes(frase));
+                return ByteArrayToString(hashedDataBytes);
+            }
+        }
+
+        // Método para gerar o hash de um texto usando SHA512
+        public static string SHA512Encrypt(string frase)
+        {
+            using (SHA512 sha512hasher = SHA512.Create())
+            {
+                byte[] hashedDataBytes = sha512hasher.ComputeHash(Encoding.UTF8.GetBytes(frase));
+                return ByteArrayToString(hashedDataBytes);
+            }
+        }
+
+        // Método auxiliar para converter um array de bytes em uma string hexadecimal
+        private static string ByteArrayToString(byte[] inputArray)
+        {
+            StringBuilder output = new StringBuilder(inputArray.Length * 2);
+            foreach (byte b in inputArray)
+            {
+                output.Append(b.ToString("X2"));
             }
             return output.ToString();
         }
